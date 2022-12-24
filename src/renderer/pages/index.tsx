@@ -1,38 +1,27 @@
 import { Button } from '@mantine/core';
-import { useEffect } from 'react';
+import { IGetUsageList } from 'entity/ipc';
+import { IUsage } from 'entity/usage';
+import { useEffect, useState } from 'react';
 import icon from '../../../assets/icon.svg';
-import './index.css';
+import './index.scss';
 
 const Index = () => {
-  useEffect(() => {}, []);
+  const [usageList, setUsageList] = useState<IUsage[]>([]);
+
+  useEffect(() => {
+    window.electron.ipcRenderer.on('get-usage-list', (arg) => {
+      const data = arg as IGetUsageList;
+      setUsageList(data.result);
+    });
+
+    window.electron.ipcRenderer.sendMessage('get-usage-list', [1]);
+  }, []);
 
   return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Button>Donate</Button>
-        </a>
-      </div>
+    <div className="home">
+      {usageList.map((usage) => {
+        return <div>{usage.app_name}</div>;
+      })}
     </div>
   );
 };

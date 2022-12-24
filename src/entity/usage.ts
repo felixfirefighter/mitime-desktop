@@ -1,7 +1,7 @@
 export interface IUsage {
-  appName?: string;
+  app_name?: string;
   title?: string;
-  startDate?: string;
-  endDate?: string;
-  createdDate?: string;
+  start_date?: string;
+  end_date?: string;
+  created_date?: string;
 }

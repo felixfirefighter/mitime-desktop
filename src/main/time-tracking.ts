@@ -4,9 +4,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { app } from 'electron';
 import { IUsage } from 'entity/usage';
-
-const db = new Database(`${app.getPath('userData')}/mitime.db`);
-db.pragma('journal_mode = WAL');
+import db from './db';
 
 const createTable = `
     CREATE TABLE IF NOT EXISTS usage(
@@ -30,7 +28,6 @@ export const startTracking = () => {
 
   setInterval(async () => {
     const activeWin = await activeWindow();
-    console.log(activeWin);
 
     // no active app
     if (!activeWin) {
@@ -51,40 +48,35 @@ export const startTracking = () => {
               start_date,
               end_date
             ) VALUES (
-              @appName,
+              @app_name,
               @title,
-              @startDate,
-              @endDate
+              @start_date,
+              @end_date
             )
         `
       ).run({
-        appName: activeWin?.owner?.name || '',
+        app_name: activeWin?.owner?.name || '',
         title: activeWin?.title || '',
-        startDate: startDate.format(),
-        endDate: endDate.format(),
+        start_date: startDate.format(),
+        end_date: endDate.format(),
       });
     }
     // user stays on the same app
     else {
       endDate = dayjs.utc();
-      console.log(endDate.format());
-      const result = db
-        .prepare<IUsage>(
-          `
+      db.prepare<IUsage>(
+        `
           UPDATE usage
-          SET end_date = @endDate
+          SET end_date = @end_date
           WHERE
-            app_name = @appName
+            app_name = @app_name
           ORDER BY datetime(created_date) DESC
           LIMIT 1
         `
-        )
-        .run({
-          appName: activeWin?.owner?.name,
-          endDate: endDate.format(),
-        });
-
-      console.log(result);
+      ).run({
+        app_name: activeWin?.owner?.name,
+        end_date: endDate.format(),
+      });
     }
     prevActiveWin = activeWin;
   }, 5000);
