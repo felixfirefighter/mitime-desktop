@@ -15,6 +15,8 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+import { startTracking } from './time-tracking';
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -135,3 +137,6 @@ app
     });
   })
   .catch(console.log);
+
+// start tracking app usage
+startTracking();

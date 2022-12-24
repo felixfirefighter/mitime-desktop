@@ -109,6 +109,7 @@
     }
   },
   "dependencies": {
+    "@electron/remote": "^2.0.9",
     "@emotion/react": "^11.10.5",
     "@mantine/core": "^5.9.5",
     "@mantine/dates": "^5.9.5",
@@ -128,6 +129,7 @@
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
+    "@types/better-sqlite3": "^7.6.3",
     "@types/jest": "^28.1.7",
     "@types/node": "18.7.6",
     "@types/react": "^18.0.17",

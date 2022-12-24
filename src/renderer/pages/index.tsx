@@ -1,8 +1,11 @@
 import { Button } from '@mantine/core';
+import { useEffect } from 'react';
 import icon from '../../../assets/icon.svg';
 import './index.css';
 
 const Index = () => {
+  useEffect(() => {}, []);
+
   return (
     <div>
       <div className="Hello">
