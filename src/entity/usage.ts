@@ -1,4 +1,5 @@
 export interface IUsage {
+  id?: number;
   app_name?: string;
   title?: string;
   start_date?: string;

@@ -39,7 +39,7 @@ export const startTracking = () => {
     if (prevActiveWin?.owner.name !== activeWin?.owner?.name) {
       // store in db
       startDate = dayjs.utc();
-      endDate = dayjs.utc();
+      endDate = startDate.add(1, 'second');
       db.prepare<IUsage>(
         `
           INSERT INTO usage (

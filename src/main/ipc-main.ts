@@ -1,4 +1,5 @@
 import { ipcMain } from 'electron';
+import { IGetUsageListParam } from 'entity/ipc';
 import db from './db';
 
 export const startIpcMainListener = () => {
@@ -8,22 +9,34 @@ export const startIpcMainListener = () => {
     event.reply('ipc-example', msgTemplate('pong'));
   });
 
-  ipcMain.on('get-usage-list', async (event, { offset = 0 }) => {
-    const result = db
-      .prepare(
-        `
+  ipcMain.on(
+    'get-usage-list',
+    async (event, { offset = 0, limit = 10 }: IGetUsageListParam) => {
+      const result = db
+        .prepare(
+          `
       SELECT *
       FROM usage
       ORDER BY datetime(created_date) DESC
-      LIMIT 5
+      LIMIT @limit
       OFFSET @offset
     `
-      )
-      .all({
-        offset,
-      });
-    event.reply('get-usage-list', { result });
-  });
+        )
+        .all({
+          limit,
+          offset,
+        });
+      const count = db
+        .prepare(
+          `
+        SELECT COUNT(1)
+        FROM usage
+      `
+        )
+        .get();
+      event.reply('get-usage-list', { result, count });
+    }
+  );
 };
 
 export default startIpcMainListener;
