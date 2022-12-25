@@ -1,4 +1,13 @@
 .usage-list {
+  .table {
+    table-layout: fixed;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .usage-title {
     white-space: nowrap;
     text-overflow: ellipsis;

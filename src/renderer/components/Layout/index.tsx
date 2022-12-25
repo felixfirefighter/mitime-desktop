@@ -1,3 +1,5 @@
+import { AppShell, Aside } from '@mantine/core';
+import AppNavbar from '../AppNavbar';
 import './index.scss';
 
 interface ILayout {
@@ -5,7 +7,11 @@ interface ILayout {
 }
 
 const Layout: React.FC<ILayout> = ({ children }) => {
-  return <div className="layout">{children}</div>;
+  return (
+    <div className="layout">
+      <AppShell padding="md">{children}</AppShell>
+    </div>
+  );
 };
 
 export default Layout;

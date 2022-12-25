@@ -3,21 +3,8 @@ import Database from 'better-sqlite3';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { app } from 'electron';
-import { IUsage } from 'entity/usage';
+import { IUsage } from 'entity/usage-list';
 import db from './db';
-
-const createTable = `
-    CREATE TABLE IF NOT EXISTS usage(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      app_name TEXT,
-      title TEXT,
-      start_date DATE DEFAULT (datetime('now')),
-      end_date DATE DEFAULT (datetime('now')),
-      created_date DATE DEFAULT (datetime('now'))
-    );
-  `;
-
-db.exec(createTable);
 
 dayjs.extend(utc);
 
@@ -27,7 +14,9 @@ export const startTracking = () => {
   let endDate = dayjs.utc();
 
   setInterval(async () => {
-    const activeWin = await activeWindow();
+    const activeWin = await activeWindow({
+      screenRecordingPermission: false,
+    });
 
     // no active app
     if (!activeWin) {
@@ -46,12 +35,14 @@ export const startTracking = () => {
               app_name,
               title,
               start_date,
-              end_date
+              end_date,
+              duration
             ) VALUES (
               @app_name,
               @title,
               @start_date,
-              @end_date
+              @end_date,
+              @duration
             )
         `
       ).run({
@@ -59,6 +50,7 @@ export const startTracking = () => {
         title: activeWin?.title || '',
         start_date: startDate.format(),
         end_date: endDate.format(),
+        duration: endDate.diff(startDate, 'second'),
       });
     }
     // user stays on the same app
@@ -67,7 +59,9 @@ export const startTracking = () => {
       db.prepare<IUsage>(
         `
           UPDATE usage
-          SET end_date = @end_date
+          SET
+            end_date = @end_date,
+            duration = @duration
           WHERE
             app_name = @app_name
           ORDER BY datetime(created_date) DESC
@@ -76,10 +70,11 @@ export const startTracking = () => {
       ).run({
         app_name: activeWin?.owner?.name,
         end_date: endDate.format(),
+        duration: endDate.diff(startDate, 'second'),
       });
     }
     prevActiveWin = activeWin;
-  }, 5000);
+  }, 1000);
 };
 
 export default startTracking;

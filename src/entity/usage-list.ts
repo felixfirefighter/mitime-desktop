@@ -1,4 +1,12 @@
-import { IUsage } from './usage';
+export interface IUsage {
+  id?: number;
+  app_name?: string;
+  title?: string;
+  start_date?: string;
+  end_date?: string;
+  duration?: number;
+  created_date?: string;
+}
 
 export interface IGetUsageListParam {
   limit: number;

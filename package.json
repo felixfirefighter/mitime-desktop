@@ -21,17 +21,10 @@
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "Felix Lee",
+    "email": "leeyoongti@gmail.com",
+    "url": "https://github.com/yoongti"
   },
-  "contributors": [
-    {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
-    }
-  ],
   "main": "./src/main/main.ts",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -115,6 +108,7 @@
     "@mantine/dates": "^5.9.5",
     "@mantine/form": "^5.9.5",
     "@mantine/hooks": "^5.9.5",
+    "@tabler/icons": "^1.118.0",
     "dayjs": "^1.11.7",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.8",
@@ -194,8 +188,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "MiTime",
+    "appId": "com.mitime.MiTime",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

@@ -1,0 +1,10 @@
+.overview {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  &-body {
+    display: flex;
+    justify-content: center;
+  }
+}

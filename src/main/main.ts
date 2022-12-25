@@ -16,7 +16,8 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
 import { startTracking } from './time-tracking';
-import { startIpcMainListener } from './ipc-main';
+import { startIpcMainListener } from './ipc';
+import db from './db';
 
 class AppUpdater {
   constructor() {
@@ -132,8 +133,22 @@ app
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
+
+    const createTable = `
+      CREATE TABLE IF NOT EXISTS usage(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        app_name TEXT,
+        title TEXT,
+        start_date DATE DEFAULT (datetime('now')),
+        end_date DATE DEFAULT (datetime('now')),
+        duration INTEGER DEFAULT 0,
+        created_date DATE DEFAULT (datetime('now'))
+      );
+    `;
+
+    db.exec(createTable);
+
+    // start tracking app usage
+    startTracking();
   })
   .catch(console.log);
-
-// start tracking app usage
-startTracking();

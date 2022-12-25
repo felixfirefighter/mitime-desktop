@@ -1,14 +1,8 @@
 import { ipcMain } from 'electron';
-import { IGetUsageListParam } from 'entity/ipc';
-import db from './db';
+import { IGetUsageListParam } from 'entity/usage-list';
+import db from '../db';
 
-export const startIpcMainListener = () => {
-  ipcMain.on('ipc-example', async (event, arg) => {
-    const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-    console.log(msgTemplate(arg));
-    event.reply('ipc-example', msgTemplate('pong'));
-  });
-
+const ipcMainGetUsageList = () => {
   ipcMain.on(
     'get-usage-list',
     async (event, { offset = 0, limit = 10 }: IGetUsageListParam) => {
@@ -39,4 +33,4 @@ export const startIpcMainListener = () => {
   );
 };
 
-export default startIpcMainListener;
+export default ipcMainGetUsageList;

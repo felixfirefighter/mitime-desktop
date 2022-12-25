@@ -1,9 +1,10 @@
-import { Pagination, Paper, Table } from '@mantine/core';
+import { ActionIcon, Pagination, Paper, Table, Title } from '@mantine/core';
+import { IconRefresh } from '@tabler/icons';
 import dayjs from 'dayjs';
-import { IGetUsageListRes } from 'entity/ipc';
-import { IUsage } from 'entity/usage';
+import { IGetUsageListRes, IUsage } from 'entity/usage-list';
 import { useEffect, useState } from 'react';
-import { getDuration } from 'utils/duration';
+import { formatDuration } from 'utils/duration';
+import './index.scss';
 
 const LIMIT = 10;
 
@@ -20,43 +21,53 @@ const UsageList = () => {
     });
   }, []);
 
-  useEffect(() => {
+  const getUsageList = (localPage: number) => {
     window.electron.ipcRenderer.sendMessage('get-usage-list', {
       limit: LIMIT,
-      offset: (page - 1) * LIMIT,
+      offset: (localPage - 1) * LIMIT,
     });
+  };
+
+  useEffect(() => {
+    getUsageList(page);
   }, [page]);
 
   return (
     <div className="usage-list">
-      <Paper shadow="sm" p="lg">
-        <Table verticalSpacing="lg">
+      <Paper shadow="sm" p="xl" radius={8} m={16}>
+        <div className="usage-list-header">
+          <Title order={2}>App Usage</Title>
+          <ActionIcon onClick={() => getUsageList(page)}>
+            <IconRefresh />
+          </ActionIcon>
+        </div>
+
+        <Table verticalSpacing="lg" className="table">
           <thead>
             <tr>
               <th>App</th>
-              <th>Title</th>
               <th>Start</th>
               <th>End</th>
               <th>Duration</th>
             </tr>
           </thead>
           <tbody>
-            {usageList.map(({ id, app_name, title, start_date, end_date }) => {
-              return (
-                <tr key={id}>
-                  <td>{app_name}</td>
-                  <td>
-                    <div className="usage-title">{title}</div>
-                  </td>
-                  <td>{dayjs(start_date).format('HH:mm:ss')}</td>
-                  <td>{dayjs(end_date).format('HH:mm:ss')}</td>
-                  <td>{getDuration(dayjs(start_date), dayjs(end_date))}</td>
-                </tr>
-              );
-            })}
+            {usageList.map(
+              ({ id, app_name, start_date, end_date, duration }) => {
+                return (
+                  <tr key={id}>
+                    <td>{app_name}</td>
+                    <td>{dayjs(start_date).format('HH:mm:ss')}</td>
+                    <td>{dayjs(end_date).format('HH:mm:ss')}</td>
+                    <td>{formatDuration(duration)}</td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </Table>
         <Pagination
+          color="indigo"
           page={page}
           onChange={setPage}
           total={Math.ceil(count / LIMIT)}
