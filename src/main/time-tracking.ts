@@ -1,8 +1,7 @@
 import activeWindow from 'active-win';
-import Database from 'better-sqlite3';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { app } from 'electron';
+import { desktopCapturer } from 'electron';
 import { IUsage } from 'entity/usage-list';
 import db from './db';
 
@@ -13,11 +12,10 @@ export const startTracking = () => {
   let startDate = dayjs.utc();
   let endDate = dayjs.utc();
 
-  setInterval(async () => {
-    const activeWin = await activeWindow({
-      screenRecordingPermission: false,
-    });
-
+  let activeWinInterval;
+  clearInterval(activeWinInterval);
+  activeWinInterval = setInterval(async () => {
+    const activeWin = await activeWindow();
     // no active app
     if (!activeWin) {
       prevActiveWin = activeWin;
@@ -75,6 +73,16 @@ export const startTracking = () => {
     }
     prevActiveWin = activeWin;
   }, 1000);
+};
+
+export const startDesktopCapturer = () => {
+  setInterval(async () => {
+    const sources = await desktopCapturer.getSources({
+      types: ['window', 'screen'],
+    });
+
+    console.log(sources);
+  }, 5000);
 };
 
 export default startTracking;

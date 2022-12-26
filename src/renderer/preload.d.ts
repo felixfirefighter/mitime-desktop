@@ -8,7 +8,7 @@ declare global {
       ipcRenderer: {
         sendMessage(
           channel: Channels,
-          args: IGetUsageListParam | IGetUsageOverviewParam
+          args: IGetUsageListParam | IGetUsageOverviewParam | void
         ): void;
         on(
           channel: Channels,

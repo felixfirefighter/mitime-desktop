@@ -1,12 +1,12 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.6.0",
+  "name": "mitime",
+  "version": "0.0.1",
   "description": "A foundation for scalable desktop apps",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "Felix Lee",
+    "email": "leeyoongti@gmail.com",
+    "url": "https://github.com/yoongti"
   },
   "main": "./dist/main/main.js",
   "scripts": {
@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "active-win": "^8.0.2",
-    "better-sqlite3": "^8.0.1"
+    "better-sqlite3": "^8.0.1",
+    "mac-screen-capture-permissions": "^2.0.0",
+    "macos-accessibility-permissions": "^1.0.1"
   }
 }
