@@ -17,7 +17,6 @@ const Layout: React.FC<ILayout> = ({ children }) => {
       const { hasAccessibilityPermission, hasScreenCapturePermission } =
         arg as ICheckPermissionRes;
       if (!hasAccessibilityPermission || !hasScreenCapturePermission) {
-        console.log(hasAccessibilityPermission, hasScreenCapturePermission);
         setPermission(false);
         window.electron.ipcRenderer.sendMessage('ask-for-permission');
       }
