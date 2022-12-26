@@ -1,4 +1,12 @@
-import { ActionIcon, Pagination, Paper, Table, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Pagination,
+  Paper,
+  Table,
+  Title,
+  Tooltip,
+  Text,
+} from '@mantine/core';
 import { IconRefresh } from '@tabler/icons';
 import dayjs from 'dayjs';
 import { IGetUsageListRes, IUsage } from 'entity/usage-list';
@@ -46,6 +54,7 @@ const UsageList = () => {
           <thead>
             <tr>
               <th>App</th>
+              <th>Title</th>
               <th>Start</th>
               <th>End</th>
               <th>Duration</th>
@@ -53,10 +62,15 @@ const UsageList = () => {
           </thead>
           <tbody>
             {usageList.map(
-              ({ id, app_name, start_date, end_date, duration }) => {
+              ({ id, app_name, title, start_date, end_date, duration }) => {
                 return (
                   <tr key={id}>
                     <td>{app_name}</td>
+                    <td>
+                      <Tooltip label={title}>
+                        <Text className="usage-title">{title}</Text>
+                      </Tooltip>
+                    </td>
                     <td>{dayjs(start_date).format('HH:mm:ss')}</td>
                     <td>{dayjs(end_date).format('HH:mm:ss')}</td>
                     <td>{formatDuration(duration)}</td>
