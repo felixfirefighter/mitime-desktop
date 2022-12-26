@@ -107,6 +107,15 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
+  app.setAboutPanelOptions({
+    applicationName: 'MiTime',
+    applicationVersion: app.getVersion(),
+    version: 'Alpha',
+    iconPath: getAssetPath('icon.png'),
+    authors: ['Felix Lee'],
+    copyright: 'Copyright © 2022 Felix Lee',
+  });
+
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
