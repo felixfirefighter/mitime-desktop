@@ -15,13 +15,10 @@ import log from 'electron-log';
 import { hasScreenCapturePermission } from 'mac-screen-capture-permissions';
 import hasPermissions from 'macos-accessibility-permissions';
 
-import { IUsage } from 'entity/usage-list';
-import dayjs from 'dayjs';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { startIpcMainListener } from './ipc';
 import { startTracking } from './time-tracking';
-import db from './db';
 
 class AppUpdater {
   constructor() {

@@ -1,5 +1,6 @@
 import Database from 'better-sqlite3';
 import { app } from 'electron';
+import { IDbPragma } from 'entity/db';
 import path from 'path';
 
 const db = new Database(path.join(app.getPath('userData'), 'mitime.db'));
@@ -18,5 +19,20 @@ CREATE TABLE IF NOT EXISTS usage(
 `;
 
 db.exec(createTable);
+const usageTableInfo: IDbPragma[] = db.pragma('table_info(Usage)');
+let urlColumnExists = false;
+usageTableInfo.forEach((info) => {
+  if (info.name === 'url') {
+    urlColumnExists = true;
+  }
+});
+
+if (!urlColumnExists) {
+  const alterTable = `
+  ALTER TABLE usage
+  ADD url TEXT
+  `;
+  db.exec(alterTable);
+}
 
 export default db;

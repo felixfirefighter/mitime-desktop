@@ -32,12 +32,14 @@ export const startTracking = () => {
           INSERT INTO usage (
               app_name,
               title,
+              url,
               start_date,
               end_date,
               duration
             ) VALUES (
               @app_name,
               @title,
+              @url,
               @start_date,
               @end_date,
               @duration
@@ -46,6 +48,7 @@ export const startTracking = () => {
       ).run({
         app_name: activeWin?.owner?.name || '',
         title: activeWin?.title || '',
+        url: (activeWin as any).url || '',
         start_date: startDate.format(),
         end_date: endDate.format(),
         duration: endDate.diff(startDate, 'second'),

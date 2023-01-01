@@ -8,7 +8,7 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { IGetUsageOverviewRes, IUsageOverview } from 'entity/usage-overview';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { stringToColour } from 'utils/color';
 import { formatDuration } from 'utils/duration';
 import './index.scss';
@@ -25,6 +25,7 @@ const UsageOverview = () => {
   const [overview, setOverview] = useState<IUsageOverview[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState(Period.Day.toString());
   const [totalAppUsage, setTotalAppUsage] = useState(0);
+  const [hoveredOverview, setHoveredOverview] = useState('');
 
   const initialRingLabel = useMemo(
     () => (
@@ -43,6 +44,7 @@ const UsageOverview = () => {
   const [ringLabel, setRingLabel] = useState(initialRingLabel);
 
   const resetHover = () => {
+    setHoveredOverview('');
     setRingLabel(initialRingLabel);
   };
 
@@ -65,6 +67,7 @@ const UsageOverview = () => {
         value: percent,
         color: stringToColour(item.app_name),
         onMouseEnter: () => {
+          setHoveredOverview(item.app_name);
           setRingLabel(
             <>
               <Text size="sm" align="center">
@@ -84,19 +87,7 @@ const UsageOverview = () => {
     });
   };
 
-  useEffect(() => {
-    window.electron.ipcRenderer.on('get-usage-overview', (arg) => {
-      const data = arg as IGetUsageOverviewRes;
-      setOverview(data.result);
-      setTotalAppUsage(getTotalAppUsage(data.result));
-    });
-  }, []);
-
-  useEffect(() => {
-    setRingLabel(initialRingLabel);
-  }, [totalAppUsage, initialRingLabel]);
-
-  useEffect(() => {
+  const getUsageOverview = useCallback(() => {
     let startDate = dayjs.utc().subtract(1, 'day');
     const endDate = dayjs.utc();
     if (selectedPeriod === Period.Week.toString()) {
@@ -110,6 +101,37 @@ const UsageOverview = () => {
       end_date: endDate.format(),
     });
   }, [selectedPeriod]);
+
+  useEffect(() => {
+    window.electron.ipcRenderer.on('get-usage-overview', (arg) => {
+      const data = arg as IGetUsageOverviewRes;
+      setOverview(data.result);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (hoveredOverview === '') {
+      setTotalAppUsage(getTotalAppUsage(overview));
+    }
+  }, [overview, hoveredOverview]);
+
+  useEffect(() => {
+    setRingLabel(initialRingLabel);
+  }, [totalAppUsage, initialRingLabel]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getUsageOverview();
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [getUsageOverview]);
+
+  useEffect(() => {
+    getUsageOverview();
+  }, [getUsageOverview, selectedPeriod]);
 
   return (
     <div className="overview">

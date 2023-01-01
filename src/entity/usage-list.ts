@@ -2,6 +2,7 @@ export interface IUsage {
   id?: number;
   app_name?: string;
   title?: string;
+  url?: string;
   start_date?: string;
   end_date?: string;
   duration?: number;

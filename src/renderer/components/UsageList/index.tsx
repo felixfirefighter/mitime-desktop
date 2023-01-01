@@ -55,6 +55,7 @@ const UsageList = () => {
             <tr>
               <th>App</th>
               <th>Title</th>
+              <th>URL</th>
               <th>Start</th>
               <th>End</th>
               <th>Duration</th>
@@ -62,13 +63,26 @@ const UsageList = () => {
           </thead>
           <tbody>
             {usageList.map(
-              ({ id, app_name, title, start_date, end_date, duration }) => {
+              ({
+                id,
+                app_name,
+                title,
+                url,
+                start_date,
+                end_date,
+                duration,
+              }) => {
                 return (
                   <tr key={id}>
                     <td>{app_name}</td>
                     <td>
                       <Tooltip label={title}>
-                        <Text className="usage-title">{title}</Text>
+                        <Text className="usage-text">{title}</Text>
+                      </Tooltip>
+                    </td>
+                    <td>
+                      <Tooltip label={url}>
+                        <Text className="usage-text">{url}</Text>
                       </Tooltip>
                     </td>
                     <td>{dayjs(start_date).format('HH:mm:ss')}</td>
