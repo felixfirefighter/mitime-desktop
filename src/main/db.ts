@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS usage(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   app_name TEXT,
   title TEXT,
+  url TEXT,
   start_date DATE DEFAULT (datetime('now')),
   end_date DATE DEFAULT (datetime('now')),
   duration INTEGER DEFAULT 0,
