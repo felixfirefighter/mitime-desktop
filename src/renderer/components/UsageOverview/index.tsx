@@ -4,12 +4,13 @@ import {
   SegmentedControl,
   Text,
   Title,
+  useMantineTheme,
 } from '@mantine/core';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { IGetUsageOverviewRes, IUsageOverview } from 'entity/usage-overview';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { stringToColour } from 'utils/color';
+import { strToMantineColor } from 'utils/color';
 import { formatDuration } from 'utils/duration';
 import './index.scss';
 
@@ -26,6 +27,8 @@ const UsageOverview = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(Period.Day.toString());
   const [totalAppUsage, setTotalAppUsage] = useState(0);
   const [hoveredOverview, setHoveredOverview] = useState('');
+
+  const theme = useMantineTheme();
 
   const initialRingLabel = useMemo(
     () => (
@@ -62,10 +65,11 @@ const UsageOverview = () => {
     const totalDuration = getTotalAppUsage(localOverview);
 
     return localOverview.map((item) => {
+      const mantineColor = strToMantineColor(item.app_name);
       const percent = (item['SUM(duration)'] / totalDuration) * 100;
       return {
         value: percent,
-        color: stringToColour(item.app_name),
+        color: theme.colors[mantineColor.color][mantineColor.shade],
         onMouseEnter: () => {
           setHoveredOverview(item.app_name);
           setRingLabel(

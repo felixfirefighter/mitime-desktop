@@ -1,8 +1,25 @@
+import { APP_MANTINE_COLORS, APP_MANTINE_COLORS_INDEX } from 'constant/color';
+
+interface IStrToMantineColorRes {
+  color: string;
+  shade: number;
+}
+
 /* eslint-disable no-bitwise */
-/* eslint-disable import/prefer-default-export */
-export const stringToColour = (str: string) => {
-  const stringUniqueHash = [...str].reduce((acc, char) => {
-    return char.charCodeAt(0) + ((acc << 5) - acc);
+export const strToMantineColor = (str: string): IStrToMantineColorRes => {
+  let stringUniqueHash = [...str].reduce((acc, char) => {
+    return char.charCodeAt(0) + ((acc << 4) - acc);
   }, 0);
-  return `hsl(${stringUniqueHash % 360}, 100%, 40%)`;
+
+  if (stringUniqueHash < 0) {
+    stringUniqueHash = 0;
+  }
+
+  return {
+    color: APP_MANTINE_COLORS[stringUniqueHash % APP_MANTINE_COLORS.length],
+    shade:
+      APP_MANTINE_COLORS_INDEX[
+        stringUniqueHash % APP_MANTINE_COLORS_INDEX.length
+      ],
+  };
 };
