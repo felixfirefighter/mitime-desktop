@@ -1,6 +1,6 @@
 export const HOUR_LABELS = [
   '12AM',
-  '1AM',
+  '',
   '2AM',
   '',
   '4AM',
