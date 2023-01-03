@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { desktopCapturer } from 'electron';
 import { IUsage } from 'entity/usage-list';
+import { LOCK_SCREEN_NAME_FOR_MAC } from '../constant/app';
 import db from './db';
 
 dayjs.extend(utc);
@@ -19,6 +20,11 @@ export const startTracking = () => {
     // no active app
     if (!activeWin) {
       prevActiveWin = activeWin;
+      return;
+    }
+
+    // user is idle on lock screen, ignore tracking
+    if (activeWin?.owner?.name === LOCK_SCREEN_NAME_FOR_MAC) {
       return;
     }
 
