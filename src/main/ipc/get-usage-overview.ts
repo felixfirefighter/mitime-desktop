@@ -15,7 +15,7 @@ const ipcMainGetUsageOverview = () => {
             FROM
               usage
             WHERE
-              created_date BETWEEN @start_date AND @end_date
+              DATETIME(created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
             GROUP BY
               app_name;
           `

@@ -15,4 +15,4 @@ export const APP_MANTINE_COLORS = [
   'yellow',
 ];
 
-export const APP_MANTINE_COLORS_INDEX = [3, 6, 8];
+export const APP_MANTINE_COLORS_INDEX = [1, 2, 4, 6, 9];

@@ -8,7 +8,7 @@ interface IStrToMantineColorRes {
 /* eslint-disable no-bitwise */
 export const strToMantineColor = (str: string): IStrToMantineColorRes => {
   let stringUniqueHash = [...str].reduce((acc, char) => {
-    return char.charCodeAt(0) + ((acc << 4) - acc);
+    return char.charCodeAt(0) + acc;
   }, 0);
 
   if (stringUniqueHash < 0) {

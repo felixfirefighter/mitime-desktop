@@ -6,23 +6,16 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import { Period } from 'entity/period';
 import { IGetUsageOverviewRes, IUsageOverview } from 'entity/usage-overview';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { strToMantineColor } from 'utils/color';
+import { getStartAndEndDate } from 'utils/date';
 import { formatDuration } from 'utils/duration';
+import PeriodSegmentedControl from '../PeriodSegementedControl';
 import './index.scss';
 
-enum Period {
-  Month,
-  Week,
-  Day,
-}
-
 const UsageOverview = () => {
-  dayjs.extend(utc);
-
   const [overview, setOverview] = useState<IUsageOverview[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState(Period.Day.toString());
   const [totalAppUsage, setTotalAppUsage] = useState(0);
@@ -92,14 +85,7 @@ const UsageOverview = () => {
   };
 
   const getUsageOverview = useCallback(() => {
-    let startDate = dayjs.utc().subtract(1, 'day');
-    const endDate = dayjs.utc();
-    if (selectedPeriod === Period.Week.toString()) {
-      startDate = endDate.subtract(1, 'week');
-    } else if (selectedPeriod === Period.Month.toString()) {
-      startDate = endDate.subtract(1, 'month');
-    }
-
+    const { startDate, endDate } = getStartAndEndDate(selectedPeriod);
     window.electron.ipcRenderer.sendMessage('get-usage-overview', {
       start_date: startDate.format(),
       end_date: endDate.format(),
@@ -142,23 +128,9 @@ const UsageOverview = () => {
       <Paper shadow="sm" p="xl" radius={8} m={16}>
         <div className="overview-header">
           <Title order={2}>Stats</Title>
-          <SegmentedControl
-            value={selectedPeriod}
-            onChange={setSelectedPeriod}
-            data={[
-              {
-                label: 'Day',
-                value: Period.Day.toString(),
-              },
-              {
-                label: 'Week',
-                value: Period.Week.toString(),
-              },
-              {
-                label: 'Month',
-                value: Period.Month.toString(),
-              },
-            ]}
+          <PeriodSegmentedControl
+            selectedPeriod={selectedPeriod}
+            setSelectedPeriod={setSelectedPeriod}
           />
         </div>
         <div className="overview-body">
