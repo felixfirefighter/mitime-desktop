@@ -1,7 +1,6 @@
 import activeWindow from 'active-win';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { desktopCapturer } from 'electron';
 import { IUsage } from 'entity/usage-list';
 import { LOCK_SCREEN_NAME_FOR_MAC } from '../constant/app';
 import db from './db';
@@ -82,16 +81,6 @@ export const startTracking = () => {
     }
     prevActiveWin = activeWin;
   }, 1000);
-};
-
-export const startDesktopCapturer = () => {
-  setInterval(async () => {
-    const sources = await desktopCapturer.getSources({
-      types: ['window', 'screen'],
-    });
-
-    console.log(sources);
-  }, 5000);
 };
 
 export default startTracking;

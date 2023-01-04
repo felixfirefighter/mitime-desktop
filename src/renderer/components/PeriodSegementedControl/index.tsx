@@ -1,10 +1,9 @@
 import { SegmentedControl } from '@mantine/core';
 import { Period } from 'entity/period';
-import { Dispatch, SetStateAction } from 'react';
 
 interface IPeriodSegmentedControl {
   selectedPeriod: string;
-  setSelectedPeriod: Dispatch<SetStateAction<string>>;
+  setSelectedPeriod: (value: string) => void;
 }
 
 const PeriodSegmentedControl: React.FC<IPeriodSegmentedControl> = ({

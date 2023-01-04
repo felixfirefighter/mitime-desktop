@@ -19,6 +19,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { startIpcMainListener } from './ipc';
 import { startTracking } from './time-tracking';
+import { isDebug } from '../utils/env';
 
 class AppUpdater {
   constructor() {
@@ -36,9 +37,6 @@ if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
-
-const isDebug =
-  process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
 if (isDebug) {
   require('electron-debug')();

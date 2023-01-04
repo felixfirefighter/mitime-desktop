@@ -15,6 +15,7 @@ import {
   IUsageByTimeDataset,
   IUsageByTimeObj,
 } from 'entity/usage-by-time';
+import mixpanel from 'mixpanel-browser';
 import { useCallback, useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { getChartLabelsAndGroups } from 'utils/chart';
@@ -109,7 +110,13 @@ const UsageBarChart = () => {
           <Title order={2}>Usage</Title>
           <PeriodSegmentedControl
             selectedPeriod={selectedPeriod}
-            setSelectedPeriod={setSelectedPeriod}
+            setSelectedPeriod={(value) => {
+              setSelectedPeriod(value);
+              mixpanel.track('Toggle Period', {
+                source: 'Usage',
+                period: value,
+              });
+            }}
           />
         </div>
         <Bar options={options} data={getData()} />

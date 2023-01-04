@@ -8,12 +8,13 @@ import {
 } from '@mantine/core';
 import { Period } from 'entity/period';
 import { IGetUsageOverviewRes, IUsageOverview } from 'entity/usage-overview';
+import mixpanel from 'mixpanel-browser';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { strToMantineColor } from 'utils/color';
 import { getStartAndEndDate } from 'utils/date';
 import { formatDuration } from 'utils/duration';
 import PeriodSegmentedControl from '../PeriodSegementedControl';
-import './index.scss';
+import styles from './index.module.scss';
 
 const UsageOverview = () => {
   const [overview, setOverview] = useState<IUsageOverview[]>([]);
@@ -124,16 +125,22 @@ const UsageOverview = () => {
   }, [getUsageOverview, selectedPeriod]);
 
   return (
-    <div className="overview">
+    <div>
       <Paper shadow="sm" p="xl" radius={8} m={16}>
-        <div className="overview-header">
+        <div className={styles.header}>
           <Title order={2}>Stats</Title>
           <PeriodSegmentedControl
             selectedPeriod={selectedPeriod}
-            setSelectedPeriod={setSelectedPeriod}
+            setSelectedPeriod={(value) => {
+              setSelectedPeriod(value);
+              mixpanel.track('Toggle Period', {
+                source: 'Overview',
+                period: value,
+              });
+            }}
           />
         </div>
-        <div className="overview-body">
+        <div className={styles.body}>
           <RingProgress
             label={
               <Text size="sm" align="center">
