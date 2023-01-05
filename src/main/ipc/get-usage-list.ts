@@ -9,11 +9,11 @@ const ipcMainGetUsageList = () => {
       const result = db
         .prepare(
           `
-      SELECT *
-      FROM usage
-      ORDER BY datetime(created_date) DESC
-      LIMIT @limit
-      OFFSET @offset
+        SELECT *
+        FROM usage
+        ORDER BY datetime(created_date) DESC
+        LIMIT @limit
+        OFFSET @offset
     `
         )
         .all({
@@ -28,6 +28,7 @@ const ipcMainGetUsageList = () => {
       `
         )
         .get();
+
       event.reply('get-usage-list', { result, count });
     }
   );

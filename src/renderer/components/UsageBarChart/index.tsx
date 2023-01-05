@@ -1,4 +1,4 @@
-import { Paper, Title, useMantineTheme } from '@mantine/core';
+import { Paper, Title } from '@mantine/core';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { APP_MANTINE_DEFAULT_COLORS } from 'constant/color';
 import { Period } from 'entity/period';
 import {
   IGetUsageByTimeRes,
@@ -27,7 +28,6 @@ import styles from './index.module.scss';
 const UsageBarChart = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(Period.Day.toString());
   const [usageByTimeList, setUsageByTimeList] = useState<IUsageByTime[]>([]);
-  const theme = useMantineTheme();
 
   const getUsageByTime = useCallback(() => {
     const { startDate, endDate } = getStartAndEndDate(selectedPeriod);
@@ -69,7 +69,8 @@ const UsageBarChart = () => {
         data: dataObj[key].map((duration) => {
           return Math.floor(duration / 60);
         }),
-        backgroundColor: theme.colors[mantineColor.color][mantineColor.shade],
+        backgroundColor:
+          APP_MANTINE_DEFAULT_COLORS[mantineColor.color][mantineColor.shade],
       });
     });
 

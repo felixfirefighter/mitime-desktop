@@ -6,7 +6,6 @@ import { useState } from 'react';
 import Layout from './components/Layout';
 import Index from './pages';
 import UsageListPage from './pages/usage-list';
-import { NavContext } from './context/nav-context';
 
 export default function App() {
   mixpanel.init('4f4b386af0353a1476a660bffc7d513c', { debug: isDebug });

@@ -3,6 +3,7 @@ export interface IUsage {
   app_name?: string;
   title?: string;
   url?: string;
+  usage_info_id?: number;
   start_date?: string;
   end_date?: string;
   duration?: number;

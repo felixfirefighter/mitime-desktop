@@ -1,6 +1,7 @@
 export interface IUsageOverview {
   app_name: string;
-  'SUM(duration)': number;
+  duration: number;
+  color: string;
 }
 
 export interface IGetUsageOverviewParam {

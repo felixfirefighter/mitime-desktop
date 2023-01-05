@@ -1,11 +1,5 @@
-import {
-  Paper,
-  RingProgress,
-  SegmentedControl,
-  Text,
-  Title,
-  useMantineTheme,
-} from '@mantine/core';
+import { Paper, RingProgress, Text, Title } from '@mantine/core';
+import { APP_MANTINE_DEFAULT_COLORS } from 'constant/color';
 import { Period } from 'entity/period';
 import { IGetUsageOverviewRes, IUsageOverview } from 'entity/usage-overview';
 import mixpanel from 'mixpanel-browser';
@@ -21,8 +15,6 @@ const UsageOverview = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(Period.Day.toString());
   const [totalAppUsage, setTotalAppUsage] = useState(0);
   const [hoveredOverview, setHoveredOverview] = useState('');
-
-  const theme = useMantineTheme();
 
   const initialRingLabel = useMemo(
     () => (
@@ -47,7 +39,7 @@ const UsageOverview = () => {
 
   const getTotalAppUsage = (localOverview: IUsageOverview[]) => {
     return localOverview.reduce((prev, cur) => {
-      return prev + cur['SUM(duration)'];
+      return prev + cur.duration;
     }, 0);
   };
 
@@ -60,10 +52,10 @@ const UsageOverview = () => {
 
     return localOverview.map((item) => {
       const mantineColor = strToMantineColor(item.app_name);
-      const percent = (item['SUM(duration)'] / totalDuration) * 100;
+      const percent = (item.duration / totalDuration) * 100;
       return {
         value: percent,
-        color: theme.colors[mantineColor.color][mantineColor.shade],
+        color: item.color,
         onMouseEnter: () => {
           setHoveredOverview(item.app_name);
           setRingLabel(
@@ -72,7 +64,7 @@ const UsageOverview = () => {
                 {item.app_name}
               </Text>
               <Text size="sm" align="center">
-                {formatDuration(item['SUM(duration)'], 'hour')}
+                {formatDuration(item.duration, 'hour')}
               </Text>
               <Text size="sm" align="center">
                 ({percent.toFixed(2)}%)

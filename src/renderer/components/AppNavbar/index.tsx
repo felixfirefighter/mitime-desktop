@@ -36,7 +36,7 @@ const AppNavbar = () => {
                 [styles.active]: location.pathname === path,
               })}
               onClick={onClick}
-              m={4}
+              my={4}
             >
               {icon}
             </ActionIcon>

@@ -10,14 +10,16 @@ const ipcMainGetUsageOverview = () => {
         .prepare(
           `
             SELECT
-              app_name,
-              SUM(duration)
+              usage.app_name,
+              SUM(usage.duration) AS duration,
+              usage_info.color
             FROM
               usage
+              INNER JOIN usage_info ON usage_info.id = usage.usage_info_id
             WHERE
-              DATETIME(created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
+              DATETIME(usage.created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
             GROUP BY
-              app_name;
+              usage_info.app_name;
           `
         )
         .all({

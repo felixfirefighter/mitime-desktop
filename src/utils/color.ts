@@ -1,4 +1,7 @@
-import { APP_MANTINE_COLORS, APP_MANTINE_COLORS_INDEX } from 'constant/color';
+import {
+  APP_MANTINE_COLORS,
+  APP_MANTINE_COLORS_INDEX,
+} from '../constant/color';
 
 interface IStrToMantineColorRes {
   color: string;
