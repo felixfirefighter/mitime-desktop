@@ -1,0 +1,14 @@
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+.navItem {
+  color: var(--mantine-color-dark-2);
+
+  &.active,
+  &:hover {
+    color: var(--mantine-color-dark-8);
+  }
+
+}

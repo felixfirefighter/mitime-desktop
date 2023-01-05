@@ -27,7 +27,7 @@ const Layout: React.FC<ILayout> = ({ children }) => {
 
   return (
     <div className="layout">
-      <AppShell padding="md">
+      <AppShell padding="md" navbar={<AppNavbar />}>
         <PermissionModal
           permission={permission}
           setPermission={() => setPermission(true)}

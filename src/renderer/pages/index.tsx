@@ -1,11 +1,11 @@
 import UsageBarChart from 'renderer/components/UsageBarChart';
 import UsageList from 'renderer/components/UsageList';
 import UsageOverview from 'renderer/components/UsageOverview';
-import './index.scss';
+import styles from './index.module.scss';
 
 const Index = () => {
   return (
-    <div className="home">
+    <div>
       <UsageOverview />
       <UsageBarChart />
       <UsageList />
