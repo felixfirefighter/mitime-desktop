@@ -51,7 +51,6 @@ const UsageOverview = () => {
     const totalDuration = getTotalAppUsage(localOverview);
 
     return localOverview.map((item) => {
-      const mantineColor = strToMantineColor(item.app_name);
       const percent = (item.duration / totalDuration) * 100;
       return {
         value: percent,

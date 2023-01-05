@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import { IGetUsageListRes, IUsage } from 'entity/usage-list';
 import { useEffect, useState } from 'react';
 import { formatDuration } from 'utils/duration';
-import './index.scss';
+import styles from './index.module.scss';
 
 const LIMIT = 10;
 
@@ -43,14 +43,14 @@ const UsageList = () => {
   return (
     <div className="usage-list">
       <Paper shadow="sm" p="xl" radius={8} m={16}>
-        <div className="usage-list-header">
+        <div className={styles.header}>
           <Title order={2}>App Usage</Title>
           <ActionIcon onClick={() => getUsageList(page)}>
             <IconRefresh />
           </ActionIcon>
         </div>
 
-        <Table verticalSpacing="lg" className="table">
+        <Table verticalSpacing="lg" className={styles.table}>
           <thead>
             <tr>
               <th>App</th>
@@ -77,12 +77,12 @@ const UsageList = () => {
                     <td>{app_name}</td>
                     <td>
                       <Tooltip label={title}>
-                        <Text className="usage-text">{title}</Text>
+                        <Text className={styles.usageText}>{title}</Text>
                       </Tooltip>
                     </td>
                     <td>
                       <Tooltip label={url}>
-                        <Text className="usage-text">{url}</Text>
+                        <Text className={styles.usageText}>{url}</Text>
                       </Tooltip>
                     </td>
                     <td>{dayjs(start_date).format('HH:mm:ss')}</td>

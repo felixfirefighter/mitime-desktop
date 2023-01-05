@@ -24,8 +24,8 @@ const AppNavbar = () => {
   ];
 
   return (
-    <Navbar width={{ xs: 54 }} className={styles.navbar} p={8}>
-      <div>
+    <Navbar width={{ xs: 54 }} className={styles.navbar}>
+      <div className={styles.navbarBody}>
         {NAV_ITEMS.map(({ id, icon, path, onClick }) => {
           return (
             <ActionIcon

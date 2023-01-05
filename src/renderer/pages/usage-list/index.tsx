@@ -1,5 +1,11 @@
+import UsageInfoList from 'renderer/components/UsageInfoList';
+
 const UsageListPage = () => {
-  return <div>Usage List</div>;
+  return (
+    <div>
+      <UsageInfoList />
+    </div>
+  );
 };
 
 export default UsageListPage;

@@ -7,6 +7,7 @@ export type Channels =
   | 'ask-for-permission'
   | 'relaunch'
   | 'get-usage-by-time'
+  | 'get-usage-info-list'
   | 'debugging';
 
 contextBridge.exposeInMainWorld('electron', {
