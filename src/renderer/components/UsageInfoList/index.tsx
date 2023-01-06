@@ -1,6 +1,8 @@
-import { Paper, Table, Pagination, Title, Button } from '@mantine/core';
+import { Paper, Table, Pagination, Title } from '@mantine/core';
 import { IGetUsageInfoListRes, IUsageInfo } from 'entity/usage-info';
 import { useEffect, useState } from 'react';
+import AppColorPicker from '../AppColorPicker';
+
 import styles from './index.module.scss';
 
 const LIMIT = 10;
@@ -48,10 +50,7 @@ const UsageInfoList = () => {
                 <tr key={id}>
                   <td>{app_name}</td>
                   <td>
-                    <div
-                      className={styles.colorSelector}
-                      style={{ background: color }}
-                    />
+                    <AppColorPicker id={id || 0} color={color || ''} />
                   </td>
                 </tr>
               );

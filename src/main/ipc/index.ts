@@ -5,6 +5,7 @@ import ipcMainGetUsageInfoList from './get-usage-info';
 import ipcMainGetUsageList from './get-usage-list';
 import ipcMainGetUsageOverview from './get-usage-overview';
 import ipcMainRelaunch from './relaunch';
+import ipcMainUpdateUsageInfo from './update-usage-info';
 
 export const startIpcMainListener = () => {
   ipcMainGetUsageList();
@@ -14,6 +15,7 @@ export const startIpcMainListener = () => {
   ipcMainRelaunch();
   ipcMainGetUsageByTime();
   ipcMainGetUsageInfoList();
+  ipcMainUpdateUsageInfo();
 };
 
 export default startIpcMainListener;

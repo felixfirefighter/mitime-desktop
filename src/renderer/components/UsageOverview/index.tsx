@@ -1,10 +1,8 @@
 import { Paper, RingProgress, Text, Title } from '@mantine/core';
-import { APP_MANTINE_DEFAULT_COLORS } from 'constant/color';
 import { Period } from 'entity/period';
 import { IGetUsageOverviewRes, IUsageOverview } from 'entity/usage-overview';
 import mixpanel from 'mixpanel-browser';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { strToMantineColor } from 'utils/color';
 import { getStartAndEndDate } from 'utils/date';
 import { formatDuration } from 'utils/duration';
 import PeriodSegmentedControl from '../PeriodSegementedControl';

@@ -34,6 +34,7 @@ const UsageBarChart = () => {
     window.electron.ipcRenderer.sendMessage('get-usage-by-time', {
       start_date: startDate.format(),
       end_date: endDate.format(),
+      type: selectedPeriod,
     });
   }, [selectedPeriod]);
 
@@ -51,26 +52,27 @@ const UsageBarChart = () => {
   const getData = () => {
     const { labels, groups } = getChartLabelsAndGroups(selectedPeriod);
     const dataObj: IUsageByTimeObj = {};
-    usageByTimeList.forEach(({ app_name, group_date, duration }) => {
+    usageByTimeList.forEach(({ app_name, group_date, duration, color }) => {
       if (!(app_name in dataObj)) {
-        dataObj[app_name] = [...groups];
+        dataObj[app_name] = {
+          duration: [...groups],
+          color,
+        };
       }
 
       const timeParts = group_date.split('-');
       const time = Number(timeParts.pop()) || 0;
-      dataObj[app_name][time] += duration;
+      dataObj[app_name].duration[time] += duration;
     });
 
     const datasets: IUsageByTimeDataset[] = [];
     Object.keys(dataObj).forEach((key) => {
-      const mantineColor = strToMantineColor(key);
       datasets.push({
         label: key,
-        data: dataObj[key].map((duration) => {
+        data: dataObj[key].duration.map((duration) => {
           return Math.floor(duration / 60);
         }),
-        backgroundColor:
-          APP_MANTINE_DEFAULT_COLORS[mantineColor.color][mantineColor.shade],
+        backgroundColor: dataObj[key].color,
       });
     });
 

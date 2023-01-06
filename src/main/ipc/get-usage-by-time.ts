@@ -8,9 +8,9 @@ const ipcMainGetUsageByTime = () => {
     'get-usage-by-time',
     async (event, { start_date, end_date, type }: IGetUsageByTimeParam) => {
       let groupDate = '%Y-%m-%d-%H';
-      if (type === Period.Week) {
+      if (type === Period.Week.toString()) {
         groupDate = '%Y-%m-%d';
-      } else if (type === Period.Month) {
+      } else if (type === Period.Month.toString()) {
         groupDate = '%Y-%m-%d-%W';
       }
 
@@ -18,17 +18,20 @@ const ipcMainGetUsageByTime = () => {
         .prepare(
           `
           SELECT
-            app_name,
-            STRFTIME(@group_date, created_date, 'localtime') AS group_date,
-            SUM(duration) AS duration
+            usage.app_name,
+            STRFTIME(@group_date, usage.created_date, 'localtime') AS group_date,
+            SUM(usage.duration) AS duration,
+            usage_info.color
           FROM
             usage
+          INNER JOIN
+            usage_info ON usage_info.id = usage.usage_info_id
           WHERE
-            DATETIME(created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
+            DATETIME(usage.created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
           GROUP BY
-            app_name,
-            STRFTIME(@group_date, created_date)
-          ORDER BY app_name, group_date;
+            usage.app_name,
+            STRFTIME(@group_date, usage.created_date)
+          ORDER BY usage.app_name, group_date;
           `
         )
         .all({

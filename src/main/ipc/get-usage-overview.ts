@@ -15,7 +15,8 @@ const ipcMainGetUsageOverview = () => {
               usage_info.color
             FROM
               usage
-              INNER JOIN usage_info ON usage_info.id = usage.usage_info_id
+            INNER JOIN
+              usage_info ON usage_info.id = usage.usage_info_id
             WHERE
               DATETIME(usage.created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
             GROUP BY
@@ -26,6 +27,7 @@ const ipcMainGetUsageOverview = () => {
           start_date,
           end_date,
         });
+
       event.reply('get-usage-overview', { result });
     }
   );

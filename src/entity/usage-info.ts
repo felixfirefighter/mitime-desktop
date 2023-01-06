@@ -13,3 +13,8 @@ export interface IGetUsageInfoListRes {
   result: Array<IUsageInfo>;
   count: number;
 }
+
+export interface IUpdateUsageInfoParam {
+  id: number;
+  color: string;
+}
