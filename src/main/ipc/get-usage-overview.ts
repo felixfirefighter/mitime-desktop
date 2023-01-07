@@ -15,7 +15,7 @@ const ipcMainGetUsageOverview = () => {
               usage_info.color
             FROM
               usage
-            LEFT JOIN
+            INNER JOIN
               usage_info ON usage_info.id = usage.usage_info_id
             WHERE
               DATETIME(usage.created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
