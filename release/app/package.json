@@ -1,7 +1,7 @@
 {
   "name": "mitime",
-  "version": "0.0.2",
-  "description": "A foundation for scalable desktop apps",
+  "version": "0.0.3",
+  "description": "A time tracking app for your goals",
   "license": "MIT",
   "author": {
     "name": "Felix Lee",
