@@ -1,3 +1,4 @@
+import ipcMainAddUsageCategory from './add-usage-category';
 import ipcMainAskForPermission from './ask-for-permission';
 import ipcMainCheckPermission from './check-permission';
 import ipcMainGetUsageByTime from './get-usage-by-time';
@@ -16,6 +17,7 @@ export const startIpcMainListener = () => {
   ipcMainGetUsageByTime();
   ipcMainGetUsageInfoList();
   ipcMainUpdateUsageInfo();
+  ipcMainAddUsageCategory();
 };
 
 export default startIpcMainListener;

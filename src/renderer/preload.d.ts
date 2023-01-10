@@ -1,4 +1,5 @@
 import { IGetUsageByTimeParam } from 'entity/usage-by-time';
+import { IAddUsageCategory } from 'entity/usage-category';
 import { IUpdateUsageInfoParam } from 'entity/usage-info';
 import { IGetUsageListParam } from 'entity/usage-list';
 import { IGetUsageOverviewParam } from 'entity/usage-overview';
@@ -15,6 +16,7 @@ declare global {
             | IGetUsageOverviewParam
             | IGetUsageByTimeParam
             | IUpdateUsageInfoParam
+            | IAddUsageCategory
             | void
         ): void;
         on(

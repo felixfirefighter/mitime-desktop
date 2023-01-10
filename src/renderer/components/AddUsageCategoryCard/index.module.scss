@@ -1,0 +1,19 @@
+
+
+.inputContainer {
+  display: flex;
+}
+
+.input {
+  flex: 1;
+
+  input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.inputButton {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
