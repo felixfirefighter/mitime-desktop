@@ -6,7 +6,12 @@ import {
   Input,
   TextInput,
   Button,
+  Divider,
 } from '@mantine/core';
+import {
+  IGetUsageCategoryListRes,
+  IUsageCategory,
+} from 'entity/usage-category';
 import { IGetUsageInfoListRes, IUsageInfo } from 'entity/usage-info';
 import { useEffect, useState } from 'react';
 import AppColorPicker from '../AppColorPicker';
@@ -19,6 +24,7 @@ const UsageInfoList = () => {
   const [usageInfoList, setUsageInfoList] = useState<IUsageInfo[]>([]);
   const [count, setCount] = useState(10);
   const [page, setPage] = useState(1);
+  const [categoryList, setCategoryList] = useState<IUsageCategory[]>([]);
 
   useEffect(() => {
     window.electron.ipcRenderer.on('get-usage-info-list', (arg) => {
@@ -26,7 +32,18 @@ const UsageInfoList = () => {
       setUsageInfoList(data.result);
       setCount(data.count);
     });
+
+    window.electron.ipcRenderer.on('add-usage-category', () => {});
+
+    window.electron.ipcRenderer.on('get-usage-category-list', (arg) => {
+      const data = arg as IGetUsageCategoryListRes;
+      setCategoryList(data.result);
+    });
   }, []);
+
+  const getUsageCategoryList = () => {
+    window.electron.ipcRenderer.sendMessage('get-usage-category-list');
+  };
 
   const getUsageInfoList = (localPage: number) => {
     window.electron.ipcRenderer.sendMessage('get-usage-info-list', {
@@ -37,6 +54,7 @@ const UsageInfoList = () => {
 
   useEffect(() => {
     getUsageInfoList(page);
+    getUsageCategoryList();
   }, [page]);
 
   return (
@@ -45,6 +63,17 @@ const UsageInfoList = () => {
         <div className={styles.header}>
           <Title order={2}>Apps</Title>
         </div>
+
+        {categoryList.map(({ title }) => {
+          return (
+            <div>
+              <Title order={4} my={16}>
+                {title}
+              </Title>
+              <Divider />
+            </div>
+          );
+        })}
         <Table verticalSpacing="lg" className={styles.table}>
           <thead>
             <tr>

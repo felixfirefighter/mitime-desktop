@@ -10,6 +10,7 @@ export type Channels =
   | 'get-usage-info-list'
   | 'update-usage-info'
   | 'add-usage-category'
+  | 'get-usage-category-list'
   | 'debugging';
 
 contextBridge.exposeInMainWorld('electron', {
