@@ -11,6 +11,8 @@ import {
 import {
   IGetUsageCategoryListRes,
   IUsageCategory,
+  IUsageCategoryListWithAppList,
+  IUsageCategoryWithApp,
 } from 'entity/usage-category';
 import { IGetUsageInfoListRes, IUsageInfo } from 'entity/usage-info';
 import { useEffect, useState } from 'react';
@@ -24,7 +26,8 @@ const UsageInfoList = () => {
   const [usageInfoList, setUsageInfoList] = useState<IUsageInfo[]>([]);
   const [count, setCount] = useState(10);
   const [page, setPage] = useState(1);
-  const [categoryList, setCategoryList] = useState<IUsageCategory[]>([]);
+  const [categoryList, setCategoryList] =
+    useState<IUsageCategoryListWithAppList>([]);
 
   useEffect(() => {
     window.electron.ipcRenderer.on('get-usage-info-list', (arg) => {
@@ -37,7 +40,8 @@ const UsageInfoList = () => {
 
     window.electron.ipcRenderer.on('get-usage-category-list', (arg) => {
       const data = arg as IGetUsageCategoryListRes;
-      setCategoryList(data.result);
+
+      // setCategoryList(data.result);
     });
   }, []);
 
