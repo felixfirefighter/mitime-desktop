@@ -6,6 +6,7 @@ import {
   WEEK_GROUPS,
   WEEK_LABELS,
 } from 'constant/date';
+import dayjs from 'dayjs';
 import { Period } from 'entity/period';
 
 export const getChartLabelsAndGroups = (period: string) => {
@@ -26,4 +27,19 @@ export const getChartLabelsAndGroups = (period: string) => {
     labels: MONTH_LABELS,
     groups: MONTH_GROUPS,
   };
+};
+
+export const getTimeGroup = (period: string, groupDate: string) => {
+  if (period === Period.Week.toString()) {
+    const dayOfWeek = dayjs(groupDate).day();
+    return dayOfWeek;
+  }
+
+  if (period === Period.Month.toString()) {
+    const timeParts = groupDate.split('-');
+    return (Number(timeParts.pop()) || 1) - 1;
+  }
+
+  const timeParts = groupDate.split('-');
+  return Number(timeParts.pop()) || 0;
 };

@@ -11,7 +11,7 @@ const ipcMainGetUsageByTime = () => {
       if (type === Period.Week.toString()) {
         groupDate = '%Y-%m-%d';
       } else if (type === Period.Month.toString()) {
-        groupDate = '%Y-%m-%d-%W';
+        groupDate = '%Y-%m';
       }
 
       const result = db
@@ -30,7 +30,7 @@ const ipcMainGetUsageByTime = () => {
             DATETIME(usage.created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
           GROUP BY
             usage.app_name,
-            STRFTIME(@group_date, usage.created_date)
+            STRFTIME(@group_date, usage.created_date, 'localtime')
           ORDER BY usage.app_name, group_date;
           `
         )
@@ -39,6 +39,7 @@ const ipcMainGetUsageByTime = () => {
           start_date,
           end_date,
         });
+
       event.reply('get-usage-by-time', { result });
     }
   );

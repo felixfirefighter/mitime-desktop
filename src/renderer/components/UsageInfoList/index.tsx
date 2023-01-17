@@ -40,7 +40,6 @@ const UsageInfoList = () => {
 
     window.electron.ipcRenderer.on('get-usage-category-list', (arg) => {
       const data = arg as IGetUsageCategoryListRes;
-
       // setCategoryList(data.result);
     });
   }, []);

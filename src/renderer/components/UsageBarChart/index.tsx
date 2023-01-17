@@ -8,7 +8,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { APP_MANTINE_DEFAULT_COLORS } from 'constant/color';
 import { Period } from 'entity/period';
 import {
   IGetUsageByTimeRes,
@@ -19,8 +18,7 @@ import {
 import mixpanel from 'mixpanel-browser';
 import { useCallback, useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { getChartLabelsAndGroups } from 'utils/chart';
-import { strToMantineColor } from 'utils/color';
+import { getChartLabelsAndGroups, getTimeGroup } from 'utils/chart';
 import { getStartAndEndDate } from 'utils/date';
 import PeriodSegmentedControl from '../PeriodSegementedControl';
 import styles from './index.module.scss';
@@ -60,8 +58,7 @@ const UsageBarChart = () => {
         };
       }
 
-      const timeParts = group_date.split('-');
-      const time = Number(timeParts.pop()) || 0;
+      const time = getTimeGroup(selectedPeriod, group_date);
       dataObj[app_name].duration[time] += duration;
     });
 
@@ -81,8 +78,6 @@ const UsageBarChart = () => {
       datasets,
     };
   };
-
-  getData();
 
   ChartJS.register(
     CategoryScale,
