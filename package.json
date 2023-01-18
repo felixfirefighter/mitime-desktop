@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A time tracking app for your goals",
   "keywords": [
     "electron",
@@ -119,6 +119,7 @@
     "electron-updater": "^5.2.3",
     "mixpanel-browser": "^2.45.0",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "^5.1.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
@@ -135,6 +136,7 @@
     "@types/mixpanel-browser": "^2.38.0",
     "@types/node": "18.7.6",
     "@types/react": "^18.0.17",
+    "@types/react-beautiful-dnd": "^13.1.3",
     "@types/react-color": "^3.0.6",
     "@types/react-dom": "^18.0.6",
     "@types/react-test-renderer": "^18.0.0",

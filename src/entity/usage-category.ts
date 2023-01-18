@@ -6,13 +6,16 @@ export interface IUsageCategory {
 
 export interface IUsageCategoryWithApp {
   title: string;
-  app_name: string;
-  color: string;
+  category_id: number;
+  usage_info_ids: string;
+  app_names: string;
+  colors: string;
 }
 
 export interface IUsageCategoryListWithAppList {
   title: string;
   app_list: Array<{
+    id: number;
     title: string;
     color: Color;
   }>;

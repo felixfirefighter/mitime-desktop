@@ -8,6 +8,8 @@ import {
   Button,
   Divider,
 } from '@mantine/core';
+import { DragDropContext } from 'react-beautiful-dnd';
+
 import {
   IGetUsageCategoryListRes,
   IUsageCategory,
@@ -26,8 +28,9 @@ const UsageInfoList = () => {
   const [usageInfoList, setUsageInfoList] = useState<IUsageInfo[]>([]);
   const [count, setCount] = useState(10);
   const [page, setPage] = useState(1);
-  const [categoryList, setCategoryList] =
-    useState<IUsageCategoryListWithAppList>([]);
+  const [categoryList, setCategoryList] = useState<
+    IUsageCategoryListWithAppList[]
+  >([]);
 
   useEffect(() => {
     window.electron.ipcRenderer.on('get-usage-info-list', (arg) => {
@@ -40,6 +43,7 @@ const UsageInfoList = () => {
 
     window.electron.ipcRenderer.on('get-usage-category-list', (arg) => {
       const data = arg as IGetUsageCategoryListRes;
+      console.log(data);
       // setCategoryList(data.result);
     });
   }, []);
@@ -55,6 +59,8 @@ const UsageInfoList = () => {
     });
   };
 
+  const onDragEnd = () => {};
+
   useEffect(() => {
     getUsageInfoList(page);
     getUsageCategoryList();
@@ -62,49 +68,51 @@ const UsageInfoList = () => {
 
   return (
     <div>
-      <Paper shadow="sm" p="xl" radius={8} m={16}>
-        <div className={styles.header}>
-          <Title order={2}>Apps</Title>
-        </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Paper shadow="sm" p="xl" radius={8} m={16}>
+          <div className={styles.header}>
+            <Title order={2}>Apps</Title>
+          </div>
 
-        {categoryList.map(({ title }) => {
-          return (
-            <div>
-              <Title order={4} my={16}>
-                {title}
-              </Title>
-              <Divider />
-            </div>
-          );
-        })}
-        <Table verticalSpacing="lg" className={styles.table}>
-          <thead>
-            <tr>
-              <th>App</th>
-              <th>Color</th>
-            </tr>
-          </thead>
-          <tbody>
-            {usageInfoList.map(({ id, app_name, color }) => {
-              return (
-                <tr key={id}>
-                  <td>{app_name}</td>
-                  <td>
-                    <AppColorPicker id={id || 0} color={color || ''} />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-        <Pagination
-          color="indigo"
-          page={page}
-          onChange={setPage}
-          total={Math.ceil(count / LIMIT)}
-          py="lg"
-        />
-      </Paper>
+          {categoryList.map(({ title }) => {
+            return (
+              <div>
+                <Title order={4} my={16}>
+                  {title}
+                </Title>
+                <Divider />
+              </div>
+            );
+          })}
+          <Table verticalSpacing="lg" className={styles.table}>
+            <thead>
+              <tr>
+                <th>App</th>
+                <th>Color</th>
+              </tr>
+            </thead>
+            <tbody>
+              {usageInfoList.map(({ id, app_name, color }) => {
+                return (
+                  <tr key={id}>
+                    <td>{app_name}</td>
+                    <td>
+                      <AppColorPicker id={id || 0} color={color || ''} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+          <Pagination
+            color="indigo"
+            page={page}
+            onChange={setPage}
+            total={Math.ceil(count / LIMIT)}
+            py="lg"
+          />
+        </Paper>
+      </DragDropContext>
     </div>
   );
 };

@@ -8,37 +8,33 @@ const ipcMainGetUsageCategoryList = () => {
         `
         SELECT
           usage_category.title,
-          usage_info.app_name,
-          usage_info.color
+          GROUP_CONCAT(usage_info_id) as usage_info_ids,
+          GROUP_CONCAT(app_name) as app_names,
+          GROUP_CONCAT(color) as colors,
+          category_id
         FROM
-          usage_category
-        RIGHT JOIN
-          usage_info ON usage_info.category_id = usage_category.id
+          (
+            SELECT
+              id as usage_info_id,
+              app_name,
+              color,
+              category_id
+            FROM
+              usage_info
+            ORDER BY
+              idx
+            NULLS LAST
+          )
+        LEFT JOIN
+          usage_category ON category_id = usage_category.id
         GROUP BY
-          usage_category.title,
-          usage_info.app_name
-        ORDER BY title
+          usage_category.title
+        ORDER BY
+          title
     `
       )
       .all();
 
-    //   SELECT
-    //   usage.app_name,
-    //   STRFTIME(@group_date, usage.created_date, 'localtime') AS group_date,
-    //   SUM(usage.duration) AS duration,
-    //   usage_info.color
-    // FROM
-    //   usage
-    // INNER JOIN
-    //   usage_info ON usage_info.id = usage.usage_info_id
-    // WHERE
-    //   DATETIME(usage.created_date) BETWEEN DATETIME(@start_date) AND DATETIME(@end_date)
-    // GROUP BY
-    //   usage.app_name,
-    //   STRFTIME(@group_date, usage.created_date)
-    // ORDER BY usage.app_name, group_date;
-
-    console.log(result);
     event.reply('get-usage-category-list', { result });
   });
 };
