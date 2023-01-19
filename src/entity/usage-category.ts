@@ -5,6 +5,7 @@ export interface IUsageCategory {
 }
 
 export interface IUsageCategoryWithApp {
+  id: number;
   title: string;
   category_id: number;
   usage_info_ids: string;
@@ -12,13 +13,16 @@ export interface IUsageCategoryWithApp {
   colors: string;
 }
 
-export interface IUsageCategoryListWithAppList {
+export interface IAppList {
+  id: number;
   title: string;
-  app_list: Array<{
-    id: number;
-    title: string;
-    color: Color;
-  }>;
+  color: string;
+}
+
+export interface IUsageCategoryListWithAppList {
+  id: number;
+  title: string;
+  appList: Array<IAppList>;
 }
 
 export interface IAddUsageCategory {

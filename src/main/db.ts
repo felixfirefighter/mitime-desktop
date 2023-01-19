@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS usage_info(
   app_name TEXT UNIQUE,
   color TEXT,
   category_id INTEGER,
-  idx INTEGER,
   created_date DATE DEFAULT (datetime('now')),
   updated_date DATE DEFAULT (datetime('now')),
   FOREIGN KEY (category_id)
@@ -64,22 +63,6 @@ if (!usageInfoIdColExists) {
   const alterTable = `
   ALTER TABLE usage
   ADD usage_info_id INTEGER
-  `;
-  db.exec(alterTable);
-}
-
-const usageInfoTableInfo: IDbPragma[] = db.pragma('table_info(usage_info)');
-let idxColExist = false;
-usageInfoTableInfo.forEach((info) => {
-  if (info.name === 'idx') {
-    idxColExist = true;
-  }
-});
-
-if (!idxColExist) {
-  const alterTable = `
-  ALTER TABLE usage_info
-  ADD idx INTEGER
   `;
   db.exec(alterTable);
 }

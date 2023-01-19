@@ -4,6 +4,22 @@
   margin-bottom: 16px;
 }
 
+.emptyList {
+  text-align: center;
+}
+
+.appItem {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.appItemText {
+  display: flex;
+  align-items: center;
+}
+
 .table {
   table-layout: fixed;
 }

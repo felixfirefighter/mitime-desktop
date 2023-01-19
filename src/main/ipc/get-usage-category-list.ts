@@ -7,30 +7,30 @@ const ipcMainGetUsageCategoryList = () => {
       .prepare(
         `
         SELECT
+          usage_category.id,
           usage_category.title,
           GROUP_CONCAT(usage_info_id) as usage_info_ids,
           GROUP_CONCAT(app_name) as app_names,
-          GROUP_CONCAT(color) as colors,
-          category_id
+          GROUP_CONCAT(color) as colors
         FROM
           (
             SELECT
               id as usage_info_id,
+              category_id,
               app_name,
-              color,
-              category_id
+              color
             FROM
               usage_info
             ORDER BY
-              idx
-            NULLS LAST
+              app_name
           )
-        LEFT JOIN
+        FULL OUTER JOIN
           usage_category ON category_id = usage_category.id
         GROUP BY
           usage_category.title
         ORDER BY
           title
+        NULLS LAST
     `
       )
       .all();
