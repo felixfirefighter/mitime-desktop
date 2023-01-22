@@ -10,6 +10,7 @@ const createTable = `
 CREATE TABLE IF NOT EXISTS usage_category(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT,
+  color TEXT,
   created_date DATE DEFAULT (datetime('now')),
   updated_date DATE DEFAULT (datetime('now'))
 );
@@ -39,6 +40,24 @@ CREATE TABLE IF NOT EXISTS usage(
 `;
 
 db.exec(createTable);
+const usageCategoryTableInfo: IDbPragma[] = db.pragma(
+  'table_info(usage_category)'
+);
+let colorColExists = false;
+usageCategoryTableInfo.forEach((info) => {
+  if (info.name === 'color') {
+    colorColExists = true;
+  }
+});
+
+if (!colorColExists) {
+  const alterTable = `
+  ALTER TABLE usage_category
+  ADD color TEXT
+  `;
+  db.exec(alterTable);
+}
+
 const usageTableInfo: IDbPragma[] = db.pragma('table_info(Usage)');
 let urlColExists = false;
 let usageInfoIdColExists = false;
